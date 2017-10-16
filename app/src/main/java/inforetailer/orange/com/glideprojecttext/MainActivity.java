@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-//                Glide.with(context)
-//                        .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-//                        .into(image);
-
-                Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-                        .apply(bitmapTransform(new BlurTransformation(25)))
+                Glide.with(context)
+                        .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
                         .into(image);
+
+//                Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
+//                        .apply(bitmapTransform(new BlurTransformation(25)))
+//                        .into(image);
             }
         });
     }
