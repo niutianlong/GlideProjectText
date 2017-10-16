@@ -1,6 +1,7 @@
 package inforetailer.orange.com.glideprojecttext;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,14 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -30,8 +32,41 @@ public class MainActivity extends AppCompatActivity {
     ImageView image;
     @InjectView(R.id.fab)
     FloatingActionButton fab;
+    @InjectView(R.id.next)
+    FloatingActionButton next;
 
     private Context context;
+
+    /**
+     * http://www.cnblogs.com/guilin-hu/p/5706916.html
+     * https://github.com/wasabeef/glide-transformationsF
+     * <p>
+     * Transformations
+     * <p>
+     * Crop---
+     * <p>
+     * CropTransformation, CropCircleTransformation, CropSquareTransformation, RoundedCornersTransformation
+     * <p>
+     * Color---
+     * <p>
+     * ColorFilterTransformation, GrayscaleTransformation
+     * <p>
+     * Blur---
+     * <p>
+     * BlurTransformation
+     * <p>
+     * Mask---
+     * <p>
+     * MaskTransformation
+     * <p>
+     * GPU Filter (use GPUImage)---
+     * <p>
+     * Will require add dependencies for GPUImage.---
+     * <p>
+     * ToonFilterTransformation, SepiaFilterTransformation, ContrastFilterTransformation
+     * InvertFilterTransformation, PixelationFilterTransformation, SketchFilterTransformation
+     * SwirlFilterTransformation, BrightnessFilterTransformation, KuwaharaFilterTransformation VignetteFilterTransformation
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +76,6 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Glide.with(context)
-                        .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-                        .into(image);
-
-//                Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-//                        .apply(bitmapTransform(new BlurTransformation(25)))
-//                        .into(image);
-            }
-        });
     }
 
     @Override
@@ -81,9 +100,34 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.image)
-    public void onViewClicked() {
-        Toast.makeText(context,"hello",Toast.LENGTH_SHORT).show();
-    }
 
+    @OnClick({R.id.fab, R.id.next})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fab:
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+//                Glide.with(context)
+//                        .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
+//                        .into(image);
+
+//                Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
+//                        .apply(bitmapTransform(new BlurTransformation(25)))
+//                        .into(image);
+
+                MultiTransformation multi = new MultiTransformation(
+                        new BlurTransformation(25),
+                        new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+                Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
+                        .apply(bitmapTransform(multi))
+                        .into((ImageView) findViewById(R.id.image));
+
+                break;
+            case R.id.next:
+
+                startActivity(new Intent(context,SecondActivity.class));
+
+                break;
+        }
+    }
 }
