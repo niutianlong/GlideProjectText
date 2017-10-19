@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+            ndk {
+                abiFilters 'armeabi-v7a','x86'//or armeabi、arm64-v8a、x86
+            }
+
     }
     buildTypes {
         release {
@@ -44,4 +50,11 @@ dependencies {
     compile 'com.android.support:support-compat:25.1.1'
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
+
+    //HiPermission
+    compile 'me.weyye.hipermission:library:1.0.3'
+    //压缩
+    compile 'com.zxy.android:tiny:0.1.0'
+    //上下栏
+    compile 'com.liuguangqiang.cookie:library:0.1'
 }

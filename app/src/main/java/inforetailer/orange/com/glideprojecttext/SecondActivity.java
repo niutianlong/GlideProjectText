@@ -3,8 +3,13 @@ package inforetailer.orange.com.glideprojecttext;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +21,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,9 +28,7 @@ import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.Headers;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -47,56 +48,160 @@ public class SecondActivity extends Activity {
     TextView content;
     @InjectView(R.id.clear)
     Button clear;
+    @InjectView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.second_activity);
+        setContentView(R.layout.activity_second);
         ButterKnife.inject(this);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//创建默认的线性LayoutManager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        recyclerView.setHasFixedSize(true);
+//创建并设置Adapter
+        MyAdapter mAdapter = new MyAdapter(getDummyDatas());
+        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, String data) {
+                //DO your fucking bussiness here!
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(5)
+                        .playOn(findViewById(R.id.clear));
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
+
+//        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        mLayoutManager = new GridLayoutManager(context,columNum);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    public void addItem(MyAdapter mAdapter, String content, int position) {
+//        datas.add(position, content);
+        mAdapter.notifyItemInserted(position); //Attention!
+    }
+
+    public void removeItem(MyAdapter mAdapter, String model) {
+//        int position = datas.indexOf(model);
+//        datas.remove(position);
+//        mAdapter.notifyItemRemoved(position);//Attention!
+    }
+
+    private String[] datas;
+
+    private String[] getDummyDatas() {
+        datas = new String[]{"this is 1", "this is 2", "this is 3", "this is 4", "this is 5", "this is 6"};
+        return datas;
+    }
+
+
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
+        public String[] datas = null;
+
+
+        public OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+        public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+            this.mOnItemClickListener = listener;
+        }
+
+        public MyAdapter(String[] datas) {
+            this.datas = datas;
+        }
+
+        //创建新View，被LayoutManager所调用
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
+            ViewHolder vh = new ViewHolder(view);
+            view.setOnClickListener(this);
+            return vh;
+        }
+
+        //将数据与界面进行绑定的操作
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+            viewHolder.mTextView.setText(datas[position]);
+            viewHolder.itemView.setTag(datas[position]);
+        }
+
+
+        //获取数据的数量
+        @Override
+        public int getItemCount() {
+            return datas.length;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                //注意这里使用getTag方法获取数据
+                mOnItemClickListener.onItemClick(v, (String) v.getTag());
+            }
+        }
+
+        //自定义的ViewHolder，持有每个Item的的所有界面元素
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView mTextView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mTextView = (TextView) view.findViewById(R.id.item_text);
+            }
+        }
+    }
+
+    public interface OnRecyclerViewItemClickListener {
+        void onItemClick(View view, String data);
     }
 
     /**
      * Effects
-
-     Attension
-
-     Flash, Pulse, RubberBand, Shake, Swing, Wobble, Bounce, Tada, StandUp, Wave
-
-     Special
-
-     Hinge, RollIn, RollOut,Landing,TakingOff,DropOut
-
-     Bounce
-
-     BounceIn, BounceInDown, BounceInLeft, BounceInRight, BounceInUp
-
-     Fade
-
-     FadeIn, FadeInUp, FadeInDown, FadeInLeft, FadeInRight
-
-     FadeOut, FadeOutDown, FadeOutLeft, FadeOutRight, FadeOutUp
-
-     Flip
-
-     FlipInX, FlipOutX, FlipOutY
-
-     Rotate
-
-     RotateIn, RotateInDownLeft, RotateInDownRight, RotateInUpLeft, RotateInUpRight
-
-     RotateOut, RotateOutDownLeft, RotateOutDownRight, RotateOutUpLeft, RotateOutUpRight
-
-     Slide
-
-     SlideInLeft, SlideInRight, SlideInUp, SlideInDown
-
-     SlideOutLeft, SlideOutRight, SlideOutUp, SlideOutDown
-
-     Zoom
-
-     ZoomIn, ZoomInDown, ZoomInLeft, ZoomInRight, ZoomInUp
-
-     ZoomOut, ZoomOutDown, ZoomOutLeft, ZoomOutRight, ZoomOutUp
+     * <p>
+     * Attension
+     * <p>
+     * Flash, Pulse, RubberBand, Shake, Swing, Wobble, Bounce, Tada, StandUp, Wave
+     * <p>
+     * Special
+     * <p>
+     * Hinge, RollIn, RollOut,Landing,TakingOff,DropOut
+     * <p>
+     * Bounce
+     * <p>
+     * BounceIn, BounceInDown, BounceInLeft, BounceInRight, BounceInUp
+     * <p>
+     * Fade
+     * <p>
+     * FadeIn, FadeInUp, FadeInDown, FadeInLeft, FadeInRight
+     * <p>
+     * FadeOut, FadeOutDown, FadeOutLeft, FadeOutRight, FadeOutUp
+     * <p>
+     * Flip
+     * <p>
+     * FlipInX, FlipOutX, FlipOutY
+     * <p>
+     * Rotate
+     * <p>
+     * RotateIn, RotateInDownLeft, RotateInDownRight, RotateInUpLeft, RotateInUpRight
+     * <p>
+     * RotateOut, RotateOutDownLeft, RotateOutDownRight, RotateOutUpLeft, RotateOutUpRight
+     * <p>
+     * Slide
+     * <p>
+     * SlideInLeft, SlideInRight, SlideInUp, SlideInDown
+     * <p>
+     * SlideOutLeft, SlideOutRight, SlideOutUp, SlideOutDown
+     * <p>
+     * Zoom
+     * <p>
+     * ZoomIn, ZoomInDown, ZoomInLeft, ZoomInRight, ZoomInUp
+     * <p>
+     * ZoomOut, ZoomOutDown, ZoomOutLeft, ZoomOutRight, ZoomOutUp
      */
 
 
@@ -109,18 +214,20 @@ public class SecondActivity extends Activity {
             case R.id.clear:
                 content.setText("");
 
-                YoYo.with(Techniques.Tada)
-                        .duration(700)
-                        .repeat(5)
-                        .playOn(findViewById(R.id.clear));
+//                YoYo.with(Techniques.Tada)
+//                        .duration(700)
+//                        .repeat(5)
+//                        .playOn(findViewById(R.id.clear));
+
                 break;
         }
     }
 
     private OkHttpClient mOkHttpClient;
+
     //异步POST请求
     private void postAsynHttp() {
-        mOkHttpClient=new OkHttpClient();
+        mOkHttpClient = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
                 .add("size", "10")
                 .build();
@@ -151,11 +258,12 @@ public class SecondActivity extends Activity {
         });
     }
 
-//3.异步上传文件
+    //3.异步上传文件
     public static final MediaType MEDIA_TYPE_MARKDOWN
             = MediaType.parse("text/x-markdown; charset=utf-8");
+
     private void postAsynFile() {
-        mOkHttpClient=new OkHttpClient();
+        mOkHttpClient = new OkHttpClient();
         File file = new File("/sdcard/wangshu.txt");
         Request request = new Request.Builder()
                 .url("https://api.github.com/markdown/raw")
@@ -170,12 +278,12 @@ public class SecondActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.i("wangshu",response.body().string());
+                Log.i("wangshu", response.body().string());
             }
         });
     }
 
-//4.异步下载文件
+    //4.异步下载文件
     private void downAsynFile() {
         mOkHttpClient = new OkHttpClient();
         String url = "http://img.my.csdn.net/uploads/201603/26/1458988468_5804.jpg";
