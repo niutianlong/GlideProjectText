@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "inforetailer.orange.com.glideprojecttext"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -57,4 +57,8 @@ dependencies {
     compile 'com.zxy.android:tiny:0.1.0'
     //上下栏
     compile 'com.liuguangqiang.cookie:library:0.1'
+    //a customized LayoutManager - fade and shrink the head itemView when scrolling.
+    compile 'com.stone.vega.library:VegaLayoutManager:1.0.1'
+//一个Material Design的搜索控件
+    compile 'com.miguelcatalan:materialsearchview:1.0.1'
 }

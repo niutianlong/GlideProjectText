@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.stone.vega.library.VegaLayoutManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,7 +61,8 @@ public class SecondActivity extends Activity {
 //创建默认的线性LayoutManager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+//        recyclerView.setLayoutManager(new VegaLayoutManager());
+//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能x
         recyclerView.setHasFixedSize(true);
 //创建并设置Adapter
         MyAdapter mAdapter = new MyAdapter(getDummyDatas());
