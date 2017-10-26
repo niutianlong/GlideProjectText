@@ -1,6 +1,8 @@
 package inforetailer.orange.com.glideprojecttext;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -60,10 +62,14 @@ public class SecondActivity extends Activity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //创建默认的线性LayoutManager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+//      //这句就是添加我们自定义的分隔线
+        recyclerView.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
+
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.setLayoutManager(new VegaLayoutManager());
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能x
         recyclerView.setHasFixedSize(true);
+
 //创建并设置Adapter
         MyAdapter mAdapter = new MyAdapter(getDummyDatas());
         mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
@@ -215,7 +221,7 @@ public class SecondActivity extends Activity {
                 break;
             case R.id.clear:
                 content.setText("");
-
+                startActivity(new Intent(this, ThirdActivity.class));
 //                YoYo.with(Techniques.Tada)
 //                        .duration(700)
 //                        .repeat(5)

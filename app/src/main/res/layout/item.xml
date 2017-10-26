@@ -6,6 +6,7 @@
     android:id="@+id/item_text"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:background="@color/colorAccent"
     android:textSize="14sp"
     android:gravity="center"
     android:text="this is"/>

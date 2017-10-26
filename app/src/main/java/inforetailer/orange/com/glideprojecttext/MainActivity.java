@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton dialog;
     @InjectView(R.id.search_view)
     MaterialSearchView searchView;
+    @InjectView(R.id.progress)
+    TextView progress;
 
     private Context context;
 
@@ -285,7 +288,6 @@ HiPermission.create(MainActivity.this)
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -319,6 +321,7 @@ HiPermission.create(MainActivity.this)
                 MultiTransformation multi = new MultiTransformation(
                         new BlurTransformation(25),
                         new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+
                 Glide.with(context).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
                         .apply(bitmapTransform(multi))
                         .into((ImageView) findViewById(R.id.image));

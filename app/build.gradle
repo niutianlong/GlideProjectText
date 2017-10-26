@@ -61,4 +61,8 @@ dependencies {
     compile 'com.stone.vega.library:VegaLayoutManager:1.0.1'
 //一个Material Design的搜索控件
     compile 'com.miguelcatalan:materialsearchview:1.0.1'
+    //下雪
+    compile 'com.github.jetradarmobile:android-snowfall:1.1.6'
+
+    compile 'com.gjiazhe:PanoramaImageView:1.0'
 }
